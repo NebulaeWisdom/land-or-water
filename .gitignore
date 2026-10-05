@@ -1,0 +1,30 @@
+# Local private configuration: copy project.yaml.sample -> project.yaml and fill values.
+# project.yaml holds a local API key/base_url and must never be committed.
+/project.yaml
+
+# Local working material, not part of the project.
+/task.txt
+/download_url.txt
+/AGENTS.md
+/image.jpg
+
+# Downloaded GSHHG archive (149 MB) and any locally extracted copy.
+/gshhg-shp-2.3.7.zip
+/GSHHS_shp/
+/WDBII_shp/
+
+# Runtime outputs: results database and exported tables/figures.
+/data/
+/exports/
+/temp/
+
+# Project venv.
+/.venv/
+__pycache__/
+*.py[cod]
+
+# Editor / OS noise.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

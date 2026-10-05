@@ -1,0 +1,83 @@
+# Land or Water? — sample configuration.
+# Copy this file to project.yaml in the repository root and fill in your own
+# gateway/model values. project.yaml is git-ignored and holds a local API key;
+# never commit it.
+paths:
+  database: data/results.sqlite3
+  # Runtime ground truth: trimmed archive committed in the repo (5 GSHHG layers).
+  gshhg_archive: assets/gshhg-land-water-2.3.7.zip
+  # Optional: original GSHHG 2.3.7 zip used by tools/build_truth_archive.py to rebuild it.
+  gshhg_source_archive: gshhg-shp-2.3.7.zip
+  exports: exports
+ui:
+  # Interface language: "zh" or "en".
+  language: zh
+  languages: [zh, en]
+  host: 127.0.0.1
+  port: 8501
+  refresh_seconds: 2
+  map:
+    # Cell size used to draw result sets whose test config no longer exists.
+    history_step_degrees: 2
+    colors:
+      unrun: '#e5e7eb'
+      land: '#2ca02c'
+      water: '#1f77b4'
+      invalid: '#ff7f0e'
+      failed: '#d62728'
+    export_width: 1800
+  # Template the panel copies when you click "新增配置".
+  new_test:
+    name: new_test
+    base_url: http://127.0.0.1:8000/v1
+    api_key: ''
+    model: your-model-name
+    # chat = /chat/completions, responses = /responses (always streamed).
+    protocol: chat
+    # chat only: success_data reads choices[0].message.content, openai reads the raw text.
+    response_envelope: success_data
+    # Extra request parameters sent verbatim; each row is {key, type, value} with
+    # type in string|number|boolean|json. Empty list sends nothing. Examples:
+    #   - {key: reasoning_effort, type: string, value: high}   # chat: flat key
+    #   - {key: reasoning.effort, type: string, value: high}   # responses: dotted key
+    request_parameters: []
+    # null disables the proxy; otherwise e.g. http://127.0.0.1:107.
+    proxy: null
+    limits:
+      rpm: 60
+      max_in_flight: 8
+      tpm: null
+    retries: 2
+    retry_delay_seconds: 2
+    timeout_seconds: 300
+    max_output_tokens: null
+    temperature: null
+    prompt: 'Latitude: {latitude:.6f}, Longitude: {longitude:.6f}. Is this location
+      land or water? Reply with exactly Land or Water.'
+    # Grid: cell-centre points every step_degrees; null point_count keeps the whole grid.
+    step_degrees: 2
+    point_count: 8
+    seed: 42
+tests:
+- name: example
+  base_url: http://127.0.0.1:8000/v1
+  api_key: ''
+  model: your-model-name
+  protocol: chat
+  response_envelope: success_data
+  request_parameters: []
+  proxy: null
+  limits:
+    rpm: 60
+    max_in_flight: 8
+    tpm: null
+  retries: 2
+  retry_delay_seconds: 2
+  timeout_seconds: 300
+  max_output_tokens: null
+  temperature: null
+  prompt: 'Latitude: {latitude:.6f}, Longitude: {longitude:.6f}. Is this location
+    land or water? Reply with exactly Land or Water.'
+  step_degrees: 2
+  point_count: null
+  seed: 42

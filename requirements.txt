@@ -1,0 +1,7 @@
+PyYAML
+openai
+numpy
+pyogrio
+shapely
+nicegui==3.17.1
+plotly
